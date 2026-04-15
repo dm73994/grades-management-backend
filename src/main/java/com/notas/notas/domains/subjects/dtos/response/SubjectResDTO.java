@@ -1,12 +1,12 @@
-package com.notas.notas.domains.subjects.dtos.resposne;
+package com.notas.notas.domains.subjects.dtos.response;
 
 import java.time.LocalDateTime;
 
 public record SubjectResDTO(
-        int id,
+        Integer id,
         String name,
         String code,
-        int credits,
+        Integer credits,
         LocalDateTime createdAt,
         LocalDateTime updatedAt
 ) {

@@ -1,7 +1,7 @@
 package com.notas.notas.domains.subjects.mapper;
 
 import com.notas.notas.domains.subjects.dtos.request.CreateSubjectReqDTO;
-import com.notas.notas.domains.subjects.dtos.resposne.SubjectResDTO;
+import com.notas.notas.domains.subjects.dtos.response.SubjectResDTO;
 import com.notas.notas.domains.subjects.persistence.entities.SubjectEntity;
 
 public class SubjectMapper {

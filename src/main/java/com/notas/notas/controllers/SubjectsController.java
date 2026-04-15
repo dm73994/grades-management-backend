@@ -1,7 +1,7 @@
 package com.notas.notas.controllers;
 
 import com.notas.notas.domains.subjects.dtos.request.CreateSubjectReqDTO;
-import com.notas.notas.domains.subjects.dtos.resposne.SubjectResDTO;
+import com.notas.notas.domains.subjects.dtos.response.SubjectResDTO;
 import com.notas.notas.domains.subjects.services.ISubjectService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

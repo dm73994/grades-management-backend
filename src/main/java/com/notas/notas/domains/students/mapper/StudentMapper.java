@@ -7,6 +7,7 @@ import com.notas.notas.domains.students.persistence.entities.StudentEntity;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.List;
 
 public class StudentMapper {
     public static StudentEntity toEntityFrom(CreateStudentReqDTO request){
@@ -15,7 +16,8 @@ public class StudentMapper {
                 request.name(),
                 request.lastname(),
                 request.email(),
-                request.birthdate()
+                request.birthdate(),
+                List.of()
         );
     }
 
@@ -25,7 +27,8 @@ public class StudentMapper {
                 request.name(),
                 request.lastname(),
                 request.email(),
-                request.birthdate()
+                request.birthdate(),
+                List.of()
         );
     }
 
