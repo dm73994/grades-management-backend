@@ -1,9 +1,6 @@
 package com.notas.notas.domains.grades.dtos.request;
 
-import jakarta.validation.constraints.Digits;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.*;
 
 public record CreateGradeReqDTO(
         @Digits(integer = 1, fraction = 2, message = "La nota debe ser un número con hasta 1 dígito entero y 2 dígitos decimales")
@@ -12,7 +9,7 @@ public record CreateGradeReqDTO(
         Double value,
         @NotBlank(message = "El id del estudiante no puede estar vacío")
         String studentId,
-        @NotBlank(message = "El id de la materia no puede estar vacío")
+        @NotNull(message = "El id de la materia no puede estar vacío")
         Integer subjectId
 ) {
 }
