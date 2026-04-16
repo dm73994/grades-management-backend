@@ -4,20 +4,34 @@ services:
     container_name: postgres-db
     restart: unless-stopped
     environment:
-      POSTGRES_USER: "admin"
-      POSTGRES_PASSWORD: "admin"
-      POSTGRES_DB: "admin"
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: admin
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./db/initdb.sh:/docker-entrypoint-initdb.d/initdb.sh
-      - ./db/backup.dump:/tmp/backup.dump
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U admin -d admin"]
       interval: 5s
       timeout: 5s
       retries: 10
+
+  db-init:
+    image: postgres:15
+    depends_on:
+      postgres-db:
+        condition: service_healthy
+    volumes:
+      - ./db/backup.dump:/backup.dump
+    entrypoint: >
+      bash -c "
+      echo 'Restoring database...' &&
+      pg_restore -h postgres-db -U admin -d admin /backup.dump &&
+      echo 'Restore finished'
+      "
+    environment:
+      PGPASSWORD: admin
 
 volumes:
   postgres_data:
