@@ -21,8 +21,10 @@ public class GradeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false, name = "valor")
     private Double value;
 
+    @Column(nullable = false, name = "fecha_registro")
     private LocalDateTime createdAt;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

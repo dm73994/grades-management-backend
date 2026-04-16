@@ -3,7 +3,9 @@ package com.notas.notas.controllers;
 import com.notas.notas.domains.subjects.dtos.request.CreateSubjectReqDTO;
 import com.notas.notas.domains.subjects.dtos.response.SubjectResDTO;
 import com.notas.notas.domains.subjects.services.ISubjectService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,7 +22,7 @@ public class SubjectsController {
     }
 
     @PostMapping
-    public ResponseEntity<SubjectResDTO> createSubject(@RequestBody CreateSubjectReqDTO request) {
+    public ResponseEntity<SubjectResDTO> createSubject(@RequestBody @Valid CreateSubjectReqDTO request) {
         var subject = this.subjectService.createSubject(request);
         return ResponseEntity.ok(subject);
     }
@@ -38,7 +40,7 @@ public class SubjectsController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<SubjectResDTO> updateSubject(@PathVariable int id, @RequestBody CreateSubjectReqDTO request) {
+    public ResponseEntity<SubjectResDTO> updateSubject(@PathVariable int id, @RequestBody @Valid CreateSubjectReqDTO request) {
         var subject = this.subjectService.updateSubject(id, request);
         return ResponseEntity.ok(subject);
     }

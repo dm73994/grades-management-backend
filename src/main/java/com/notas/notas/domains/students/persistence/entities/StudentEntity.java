@@ -21,16 +21,16 @@ public class StudentEntity {
     @Column(nullable = false, unique = true)
     private String id;
 
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false, length = 50, name = "nombre")
     private String name;
 
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false, length = 50, name = "apellido")
     private String lastname;
 
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "fecha_nacimiento")
     private LocalDate birthdate;
 
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)

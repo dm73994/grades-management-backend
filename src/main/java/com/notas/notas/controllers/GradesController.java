@@ -1,10 +1,11 @@
 package com.notas.notas.controllers;
 
 import com.notas.notas.domains.grades.dtos.request.CreateGradeReqDTO;
-import com.notas.notas.domains.grades.dtos.request.ListGradesReqDTO;
 import com.notas.notas.domains.grades.dtos.resposne.GradeResDTO;
 import com.notas.notas.domains.grades.services.IGradeService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public class GradesController {
     }
 
     @PostMapping
-    public ResponseEntity<GradeResDTO> createGrade(@RequestBody CreateGradeReqDTO request) {
+    public ResponseEntity<GradeResDTO> createGrade(@RequestBody @Valid CreateGradeReqDTO request) {
         GradeResDTO createdGrade = gradeService.createGrade(request);
         return ResponseEntity.ok(createdGrade);
     }

@@ -4,7 +4,9 @@ import com.notas.notas.domains.students.dtos.request.CreateStudentReqDTO;
 import com.notas.notas.domains.students.dtos.request.UpdateStudentReqDTO;
 import com.notas.notas.domains.students.dtos.response.StudentResDTO;
 import com.notas.notas.domains.students.services.IStudentService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,7 +24,7 @@ public class StudentsController {
 
 
     @PostMapping
-    public ResponseEntity<StudentResDTO> createStudent(@RequestBody CreateStudentReqDTO req) {
+    public ResponseEntity<StudentResDTO> createStudent(@RequestBody @Valid CreateStudentReqDTO req) {
         var student = this.studentService.save(req);
         return ResponseEntity.ok(student);
     }
@@ -40,7 +42,7 @@ public class StudentsController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<StudentResDTO> updateStudent(@PathVariable String id, @RequestBody UpdateStudentReqDTO req) {
+    public ResponseEntity<StudentResDTO> updateStudent(@PathVariable String id, @RequestBody @Valid UpdateStudentReqDTO req) {
         var student = this.studentService.update(id, req);
         return ResponseEntity.ok(student);
     }

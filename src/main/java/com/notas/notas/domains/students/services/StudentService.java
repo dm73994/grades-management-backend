@@ -6,6 +6,9 @@ import com.notas.notas.domains.students.dtos.response.StudentResDTO;
 import com.notas.notas.domains.students.mapper.StudentMapper;
 import com.notas.notas.domains.students.persistence.entities.StudentEntity;
 import com.notas.notas.domains.students.persistence.repositories.IStudentPersistenceRepository;
+import com.notas.notas.exceptions.custom.ValueShouldBeUniqueException;
+import jakarta.persistence.EntityExistsException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +25,12 @@ public class StudentService implements IStudentService {
 
     @Override
     public StudentResDTO save(CreateStudentReqDTO student) {
+        if(this.studentPersistenceRepository.existsById(student.id())){
+            throw new ValueShouldBeUniqueException("Student with id " + student.id() + " already exist");
+        }
+        if(this.studentPersistenceRepository.existsByEmail(student.email())){
+            throw new ValueShouldBeUniqueException("Student with email " + student.email() + " already exist");
+        }
         StudentEntity entity = StudentMapper.toEntityFrom(student);
         StudentEntity saved = this.studentPersistenceRepository.save(entity);
         return StudentMapper.toResponseFrom(saved);
@@ -40,7 +49,7 @@ public class StudentService implements IStudentService {
         Optional<StudentEntity> entity = this.studentPersistenceRepository.findById(id);
 
         if(entity.isEmpty()){
-            throw new RuntimeException("Student with id " + id + " does not exist");
+            throw new EntityNotFoundException("Student with id " + id + " does not exist");
         }
 
         return StudentMapper.toResponseFrom(entity.get());
@@ -50,7 +59,7 @@ public class StudentService implements IStudentService {
     public StudentResDTO update(String id, UpdateStudentReqDTO student) {
         Optional<StudentEntity> studentEntity = this.studentPersistenceRepository.findById(id);
         if(studentEntity.isEmpty()){
-            throw new RuntimeException("Student with id " + id + " does not exist");
+            throw new EntityNotFoundException("Student with id " + id + " does not exist");
         }
         StudentEntity entity = studentEntity.get();
         entity.setName(student.name());
@@ -66,7 +75,7 @@ public class StudentService implements IStudentService {
     public void delete(String id) {
         Optional<StudentEntity> studentEntity = this.studentPersistenceRepository.findById(id);
         if(studentEntity.isEmpty()){
-            throw new RuntimeException("Student with id " + id + " does not exist");
+            throw new EntityNotFoundException("Student with id " + id + " does not exist");
         }
         this.studentPersistenceRepository.deleteById(id);
     }

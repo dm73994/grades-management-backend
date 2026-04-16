@@ -5,6 +5,9 @@ import com.notas.notas.domains.subjects.dtos.response.SubjectResDTO;
 import com.notas.notas.domains.subjects.mapper.SubjectMapper;
 import com.notas.notas.domains.subjects.persistence.entities.SubjectEntity;
 import com.notas.notas.domains.subjects.persistence.repositories.ISubjectRepository;
+import com.notas.notas.exceptions.custom.ValueShouldBeUniqueException;
+import jakarta.persistence.EntityExistsException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -21,10 +24,10 @@ public class SubjectService implements ISubjectService{
     @Override
     public SubjectResDTO createSubject(CreateSubjectReqDTO request) {
         if(this.subjectRepository.existsByCode(request.code())){
-            throw new RuntimeException("Subject with code " + request.code() + " already exists");
+            throw new ValueShouldBeUniqueException("Subject with code " + request.code() + " already exists");
         }
         if(this.subjectRepository.existsByName(request.name())){
-            throw new RuntimeException("Subject with name " + request.name() + " already exists");
+            throw new ValueShouldBeUniqueException("Subject with name " + request.name() + " already exists");
         }
 
         SubjectEntity entity = SubjectMapper.toEntityFrom(request);
@@ -49,20 +52,17 @@ public class SubjectService implements ISubjectService{
     public SubjectResDTO getSubjectById(int id) {
         return this.subjectRepository.findById(id)
                 .map(SubjectMapper::toResponseFrom)
-                .orElseThrow(() -> new RuntimeException("Subject with id " + id + " does not exist"));
+                .orElseThrow(() -> new EntityNotFoundException("Subject with id " + id + " does not exist"));
     }
 
     @Override
     public SubjectResDTO updateSubject(int id, CreateSubjectReqDTO request) {
-        if(this.subjectRepository.existsByCode(request.code())){
-            throw new RuntimeException("Subject with code " + request.code() + " already exists");
-        }
-        if(this.subjectRepository.existsByName(request.name())){
-            throw new RuntimeException("Subject with name " + request.name() + " already exists");
-        }
-
         SubjectEntity entity = this.subjectRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Subject with id " + id + " does not exist"));
+
+        if(this.subjectRepository.existsByCode(request.code()) && !entity.getCode().equals(request.code())){
+            throw new EntityExistsException("Subject with code " + request.code() + " already exists");
+        }
 
         entity.setName(request.name());
         entity.setCode(request.code());
@@ -76,7 +76,7 @@ public class SubjectService implements ISubjectService{
     @Override
     public void deleteSubject(int id) {
         if(!this.subjectRepository.existsById(id)){
-            throw new RuntimeException("Subject with id " + id + " does not exist");
+            throw new EntityNotFoundException("Subject with id " + id + " does not exist");
         }
         this.subjectRepository.deleteById(id);
     }

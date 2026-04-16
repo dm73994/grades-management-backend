@@ -21,7 +21,7 @@ public class SubjectEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false, unique = true, length = 100, name = "nombre")
+    @Column(nullable = false, length = 100, name = "nombre")
     private String name;
 
     @Column(nullable = false, unique = true, name = "codigo")
