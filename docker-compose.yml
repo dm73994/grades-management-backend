@@ -24,14 +24,14 @@ services:
         condition: service_healthy
     volumes:
       - ./db/backup.dump:/backup.dump
-    entrypoint: >
-      bash -c "
-      echo 'Restoring database...' &&
-      pg_restore -h postgres-db -U admin -d admin /backup.dump &&
-      echo 'Restore finished'
-      "
     environment:
       PGPASSWORD: admin
+    entrypoint: >
+      bash -c "
+      echo 'Cleaning and restoring database...' &&
+      pg_restore -h postgres-db -U admin -d admin --clean --if-exists /backup.dump &&
+      echo 'Restore finished'
+      "
 
 volumes:
   postgres_data:
